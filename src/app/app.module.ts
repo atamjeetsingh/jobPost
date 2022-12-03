@@ -3,14 +3,19 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { CreateJobComponent } from './create-job/create-job.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CreateJobComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule   
   ],
   providers: [],
   bootstrap: [AppComponent]

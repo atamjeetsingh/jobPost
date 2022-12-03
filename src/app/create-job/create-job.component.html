@@ -1,0 +1,123 @@
+<!-- Form Start -->
+    <div class="container">
+      <form [formGroup]="jobPostForm" (submit)="validateForm()" class="row g-3 "  >
+        
+        <div class="col-md-12">
+          <label for="positionTitle" class="form-label">Title <span style="color:red;">*</span></label>
+          <input type="text" maxlength="30" required class="form-control"  id="positionTitle" formControlName="positionTitle" placeholder="Please Enter Title for job post">
+          <p style="color: red;" [innerHTML]="formError.positionTitle_required"></p>
+          <p style="color: red;" [innerHTML]="formError.positionTitle_max30"></p>
+        </div>
+
+        <div class="row">
+          <label for="jobType" class="form-label">Job Type <span style="color:red;">*</span></label>
+          <input type="text" maxlength="30" required class="form-control" id="jobType" formControlName="jobType" placeholder="Full Time / Part Time / Contract / Co-op" list="jobTypeSuggestions">
+          <datalist id="jobTypeSuggestions">
+              <option value="Full Time">
+              <option value="Part Time">
+              <option value="Contract">
+              <option value="Co-op">
+          </datalist>
+          <p style="color: red;" [innerHTML]="formError.jobType_required"></p>
+          <p style="color: red;" [innerHTML]="formError.jobType_max255"></p>
+        </div>
+        <div class="row" [formGroup]="salaryRange" >
+          <label class="form-label">Salary Range <span style="color:red;">*</span></label>
+          <div class="col-md-4">
+          <label for="salaryType" class="form-label">Salary Type</label>
+          <select  [(ngModel)]="salaryTypeModel" class="form-select" id="salaryType" formControlName="salaryType" required>
+            <option selected disabled value="">Choose...</option>
+            <option value="Annually">Annually</option>
+            <option value="monthly">monthly</option>
+            <option value="Hourly">Hourly</option>
+          </select>
+          <p style="color: red;" [innerHTML]="formError.salaryType_required"></p>
+        </div>
+          <div class="col-md-4" *ngIf="salaryTypeModel!='Hourly'">
+            <label for="salaryMinimum" class="form-label">Minimum<span style="color:red;">*</span></label>
+            <input type="text" required class="form-control" id="salaryMinimum" formControlName="salaryMinimum" placeholder="Minimum Salary">
+            <p style="color: red;" [innerHTML]="formError.salaryMinimum_required"></p>
+          </div>
+          <div class="col-md-4" *ngIf="salaryTypeModel=='Hourly'">
+            <label for="wage" class="form-label">Wage<span style="color:red;">*</span></label>
+            <input type="text" required class="form-control" id="wage" formControlName="wage" placeholder="Wage">
+            <p style="color: red;" [innerHTML]="formError.wage_required"></p>
+          </div>
+          <div class="col-md-4" *ngIf="salaryTypeModel!='Hourly'">
+            <label for="salaryMaximum" class="form-label">Maximum <span style="color:red;">*</span></label>
+            <input  type="text" required class="form-control" id="salaryMaximum" formControlName="salaryMaximum" placeholder="Maximum Salary ">
+            <p style="color: red;" [innerHTML]="formError.salaryMaximum_required"></p>
+          </div>
+        </div>
+        <div class="row">
+          <label for="requiredQualification" class="form-label">Required Qualification <span style="color:red;">*</span></label>
+          <input type="text" required class="form-control" id="requiredQualification" formControlName="requiredQualification" placeholder="Required Qualification">
+          <p style="color: red;" [innerHTML]="formError.requiredQualification_required"></p>
+        </div>
+        <div class="row">
+          <label for="description" class="form-label">Description </label>
+          <textarea type="text" required maxlength="255" rows="5" class="form-control" id="description" formControlName="description" placeholder="Description"></textarea>
+          <p style="color: red;" [innerHTML]="formError.description_max255"></p>
+        </div>
+        <div class="col-md-4">
+          <label for="closingDate" class="form-label">Closing Date </label>
+          <input type="date" required class="form-control" id="closingDate" formControlName="closingDate" placeholder="Closing Date">
+        </div>
+        <div class="col-md-8">
+          <label for="jobCity" class="form-label">Job City <span style="color:red;">*</span></label>
+          <input type="text" required class="form-control" id="jobCity" formControlName="jobCity" placeholder="Enter city">
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+          <label for="howToApply" class="form-label">How To Apply</label>
+          <select [(ngModel)]="howToApplyModel"  class="form-select" id="howToApply" formControlName="howToApply" required>
+            <option selected disabled value="">Choose...</option>
+            <option>Easy Apply</option>
+            <option>Apply On Email</option>
+            <option>Apply on company website</option>
+          </select>
+        </div>
+          <div class="col-md-4" *ngIf="howToApplyModel=='Apply On Email'">
+            <label for="email" class="form-label">Email <span style="color:red;">*</span></label>
+            <input type="email" required class="form-control" id="email" formControlName="email" placeholder="Email to receive applications">
+          </div>
+          <div class="col-md-4" *ngIf="howToApplyModel=='Apply on company website'">
+            <label for="website" class="form-label">Careers Website <span style="color:red;">*</span></label>
+            <input type="website" required class="form-control" id="website" formControlName="website" placeholder="Careers Website to get redirected">
+          </div>
+        </div>
+
+        <label class="form-label">Custom Questions To Ask<button style="margin:10px" class="btn btn-primary" type="button" (click)="addNewQuestion()">Add</button></label>
+        <div formArrayName="customeQuestionList">
+          <div  *ngFor="let question of customeQuestionList.controls; index as i">
+            <div class="row" [formGroup]="question">
+              <div class="col-md-4">
+                <label for="answereType" class="form-label">Answere Type</label>
+                <select class="form-select" id="answereType" formControlName="answereType" required>
+                  <option selected disabled value="">Choose...</option>
+                  <option>text</option>
+                  <option>number</option>
+                </select>
+              </div>
+              <div class="col-md-7">
+                <label for="question" class="form-label">Question <span style="color:red;">*</span></label>
+                <input  type="text" required class="form-control" id="question" formControlName="question" placeholder="Enter Question ">
+              </div>
+              <div class="col-md-1">
+                <button style="margin:10px" class="btn btn-close" type="button" (click)="deleteQuestion(i)"></button>
+              </div>
+          </div>
+          </div>
+        </div>
+
+
+        <div class="col-12">   
+          <button class="btn btn-primary" type="submit">Submit form</button>
+        </div>
+      </form>
+    </div>
+    <!-- Form End -->
+
+    <!-- dummy data output -->
+    {{areErrors}}
+    <p style="color: red;" [innerHTML]="formError.dummyData"></p>
